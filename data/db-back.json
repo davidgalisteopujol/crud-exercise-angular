@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "name": "David Galisteo",
+      "email": "dagalisteo@gmail.com",
+      "subscribed": true,
+      "country": "Spain",
+      "city": "Córdoba"
+    },
+    {
+      "name": "Amanda Alonso",
+      "email": "alonsojurado@gmail.com",
+      "subscribed": true,
+      "country": "Spain",
+      "city": "Málaga"
+    },
+    {
+      "name": "Joaquin Ramirez",
+      "email": "joaquin@gmail.com",
+      "subscribed": false,
+      "country": "Spain",
+      "city": "Madrid"
+    }
+  ]
+}

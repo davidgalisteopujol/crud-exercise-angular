@@ -1,0 +1,121 @@
+<form [formGroup]="myForm" (ngSubmit)="onSave()">
+    <!-- Nombre -->
+    <div class="row mb-3 ">
+        <label class="col-sm-3 col-form-label">Nombre de usuario</label>
+        <div class="col-sm-9">
+            <input class="form-control"
+                   placeholder="Nombre de usuario"
+                   formControlName="name"
+            >
+            <span *ngIf="isValidField('name')" class="form-text text-danger">
+                Debe de ser en formato de nombre y apellido
+            </span>
+        </div>
+    </div>  
+    
+
+    <!-- Password -->
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Contraseña</label>
+        <div class="col-sm-9">
+            <input type="password"
+                   class="form-control"
+                   placeholder="Password de su cuenta"
+                   formControlName="password"     
+            >
+
+            <span *ngIf="isValidField('password')" class="form-text text-danger">
+                 La contraseña debe de ser mayor de 6 caracteres.
+            </span> 
+        </div>
+    </div>
+
+    <!-- Password2 -->
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Confirmar la Contraseña</label>
+        <div class="col-sm-9">
+            <input type="password"
+                   class="form-control"
+                   placeholder="Confirmar la contraseña"
+                   formControlName="password2"
+            >
+
+            <span *ngIf="isValidField('password2')" class="form-text text-danger">
+                 Las contraseñas deben de ser iguales
+            </span>
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Email</label>
+        <div class="col-sm-9">
+            <input type="email"
+                   class="form-control"
+                   placeholder="Email del usuario"
+                   formControlName="email"
+            >
+            <span *ngIf="isValidField('email')" class="form-text text-danger">
+                Ingrese un correo válido
+            </span> 
+        </div>
+    </div>
+
+    <!-- Check -->
+    
+      <div class="form-check mb-3 mt-3">
+        <input formControlName="subscribed" class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+          Envíame ofertas promocionales
+        </label>
+      </div>
+
+    <!-- Paises -->
+    <div class="form-floating">
+        <select class="form-select" id="countries" formControlName="country" >
+          <option selected>Elija un País</option>
+          <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+        </select>
+        <label for="countries">País</label>
+      </div>
+
+      <!-- Ciudad -->
+      <div class="row mb-3 mt-3">
+        <label class="col-sm-3 col-form-label">Ciudad</label>
+        <div class="col-sm-9">
+            <input class="form-control"
+                   placeholder="Nombre de su ciudad"
+                   formControlName="city"
+            >
+            <!-- <span *ngIf="isValidField('name')" class="form-text text-danger">
+                   {{getFieldError('name')}}
+            </span> -->
+        </div>
+    </div>  
+
+
+    <!-- Botón -->
+    <div class="row mt-4">
+        <div class="col">
+            <button class="btn btn-primary"
+                    type="submit">
+                Crear
+            </button>
+        </div>
+    </div>
+</form>
+
+<h5 class="mt-5">Valor del formulario</h5>
+<pre>{{myForm.value |json}}</pre>
+<h5>Form Valid: </h5>{{myForm.valid}}
+<h5>Form Status:  </h5>{{myForm.status}}
+<h5>Form Pending: </h5>{{myForm.pending}}
+<h5>Form errors</h5>
+<pre>{{ myForm.errors| json }}</pre>
+
+
+
+<h5>Email</h5>
+<pre>{{ myForm.controls['email'].errors | json }}</pre>
+
+

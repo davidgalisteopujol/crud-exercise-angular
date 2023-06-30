@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "name": "david galisteo",
+      "password": "123456",
+      "password2": "123456",
+      "email": "david.galisteo@bosonit.com",
+      "subscribed": false,
+      "country": "Spain",
+      "city": "granada",
+      "id": 1
+    }
+  ]
+}
