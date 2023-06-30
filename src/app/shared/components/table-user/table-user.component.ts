@@ -13,24 +13,31 @@ export class TableUserComponent implements OnInit{
 
   constructor(private formService: FormService){}
 
-  ngOnInit(): void {
+  getUsersAPI() {
     this.formService.getUsers().subscribe((users) => {
       this.users = users;
     });
+  }
+
+  ngOnInit(): void {
+    this.getUsersAPI();
 
     this.formService.getUserAddedObservable().subscribe((addedUser) => {
       this.users.push(addedUser);
     });
+
+    this.formService.getSelectedUserUpdatedObservable().subscribe(() => {
+      this.getUsersAPI()
+    })
+
+    
   }
 
   deleteUser(id: number):void {
     const idUser = id.toString()
-    this.formService.deleteUserById(idUser).subscribe(response => console.log(response))
-    
-    this.formService.getUsers().subscribe((users) => {
-      this.users = users;
-    });
-
+    this.formService.deleteUserById(idUser).subscribe(response => {
+      this.getUsersAPI();
+    })
   }
 
   editUser(user: User) {

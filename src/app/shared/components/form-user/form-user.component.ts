@@ -16,7 +16,9 @@ export class FormUserComponent implements OnInit{
 
   public countries = countries;
 
-  public selectedUser: User | null = null;  //borrar
+  public currentUser!: User ;
+
+  public selectedUser: User | null = null;  
  
   constructor( 
     private fb:FormBuilder,
@@ -26,13 +28,10 @@ export class FormUserComponent implements OnInit{
   ){}
   
     ngOnInit(): void {
-
-      this.selectedUser = this.formService.getSelectedUser();
-      
-      this.formService.getSelectedUserUpdated().subscribe((user) => {
+      this.formService.getSelectedUserObservable().subscribe((user) => {
         this.selectedUser = user;
-
-      this.myForm.reset(this.selectedUser)
+        
+        this.myForm.reset(this.selectedUser)
       });
   }
 
@@ -56,35 +55,38 @@ export class FormUserComponent implements OnInit{
   }
 
   //Crear datos del usuario 
-  get currentUser():User{
-    const currentUser = this.myForm.value as User;
-    return currentUser;
+  updateCurrentUser():void{
+    this.currentUser = this.myForm.value as User;
+
+    if(this.selectedUser) {
+      this.currentUser.id = this.selectedUser.id
+    }
   }
 
-  //Añadir usuario
+
   onSave():void {
     if (this.myForm.invalid) return;
 
+    this.updateCurrentUser()
+
     if(this.selectedUser) {
-      this.formService.updateUser(this.selectedUser)
+      
+      this.formService.updateUser(this.currentUser)
         .subscribe(response =>console.log("usuario actualizado", response))
 
-        this.myForm.reset()
+      this.myForm.reset()
 
-       
     } else {
       this.formService.addUser(this.currentUser)
-      .subscribe(response => console.log(response))
+        .subscribe(response => console.log(response))
   
       this.myForm.reset()
     }
 
-    
-    }
-
-
-
   }
+
+
+}
 
 
   

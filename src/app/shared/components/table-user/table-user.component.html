@@ -11,11 +11,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
-        <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
+        <td>{{user.name | titlecase}}</td>
+        <td>{{user.email }}</td>
         <td>{{ user.subscribed ? '✔' : '❌' }}</td>
         <td>{{user.country}}</td>
-        <td>{{user.city}}</td>
+        <td>{{user.city |titlecase}}</td>
         <td>
           <span (click)="editUser(user)">✏</span> 
           <span (click)="deleteUser(user.id)">🗑</span>
