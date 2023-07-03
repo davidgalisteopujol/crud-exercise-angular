@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { countries } from './countries/countries';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailValidator } from '../../services/validators/email-validator.service';
 import { ValidatorsService } from '../../services/validators/validators.service';
 import { FormService } from '../../services/form.service';
 import { User } from '../../interfaces/user.interface';
+import { Country } from '../../interfaces/country.interface';
 
 
 @Component({
@@ -16,9 +16,19 @@ import { User } from '../../interfaces/user.interface';
 
 export class FormUserComponent implements OnInit {
 
-  public countries = countries;
+  public countries: Country[] = [];
   public currentUser!: User ;
   public selectedUser: User | null = null;  
+
+  getCountryData() {
+    if(this.countries.length === 0 ) {
+      console.log("Entra al get")
+      this.formService.getCountries().subscribe((response => {
+        this.countries = response
+      }))
+    };
+  };
+  
  
   constructor( 
     private fb:FormBuilder,
@@ -27,7 +37,11 @@ export class FormUserComponent implements OnInit {
     private formService: FormService
   ){}
   
+  
   ngOnInit(): void {
+    
+    this.getCountryData()
+    
     this.formService.getSelectedUserObservable().subscribe((user) => {
       this.selectedUser = user;
         
@@ -76,6 +90,7 @@ export class FormUserComponent implements OnInit {
         .subscribe(response =>console.log("usuario actualizado", response))
 
       this.myForm.reset()
+      this.selectedUser = null;
 
     } else {
       this.formService.addUser(this.currentUser)

@@ -1,8 +1,8 @@
-<form [formGroup]="myForm" (ngSubmit)="onSave()">
+<form [formGroup]="myForm" (ngSubmit)="onSave()" class="m-4">
 
     <!-- Nombre -->
-    <div class="row mb-3 ">
-        <label class="col-sm-3 col-form-label">Nombre de usuario</label>
+    <div class="mb-3">
+        <label class="col-form-label">Nombre de usuario</label>
         <div class="col-sm-9">
             <input class="form-control"
                    placeholder="Nombre de usuario"
@@ -16,13 +16,13 @@
     
 
     <!-- Password -->
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Contraseña</label>
+    <div class="mb-3">
+        <label class="col-form-label">Contraseña</label>
         <div class="col-sm-9">
             <input type="password"
                    class="form-control"
-                   placeholder="Password de su cuenta"
-                   formControlName="password"     
+                   placeholder="Establezca su contraseña"
+                   formControlName="password"   
             >
             <span *ngIf="isValidField('password')" class="form-text text-danger">
                  La contraseña debe de ser mayor de 6 caracteres.
@@ -32,12 +32,12 @@
 
 
     <!-- Password2 -->
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Confirmar la Contraseña</label>
+    <div class="mb-3">
+        <label class="col-form-label">Confirmar la Contraseña</label>
         <div class="col-sm-9">
             <input type="password"
                    class="form-control"
-                   placeholder="Confirmar la contraseña"
+                   placeholder="Repita la contraseña"
                    formControlName="password2"
             >
             <span *ngIf="isValidField('password2')" class="form-text text-danger">
@@ -48,12 +48,12 @@
 
 
     <!-- Email -->
-    <div class="row mb-3">
+    <div class="mb-3">
         <label class="col-sm-3 col-form-label">Email</label>
         <div class="col-sm-9">
             <input type="email"
                    class="form-control"
-                   placeholder="Email del usuario"
+                   placeholder="Introduzca un email válido"
                    formControlName="email"
             >
             <span *ngIf="isValidField('email')" class="form-text text-danger">
@@ -75,34 +75,32 @@
     <!-- Paises -->
     <div class="form-floating">
         <select class="form-select" id="countries" formControlName="country" >
-          <option selected>Elija un País</option>
           <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
         </select>
-        <label for="countries">País</label>
+        <label for="countries">Selecione su País</label>
     </div>
 
 
       <!-- Ciudad -->
-    <div class="row mb-3 mt-3">
+    <div class="mb-3 mt-3">
         <label class="col-sm-3 col-form-label">Ciudad</label>
         <div class="col-sm-9">
             <input class="form-control"
                    placeholder="Nombre de su ciudad"
                    formControlName="city"
             >
-            
         </div>
     </div>  
 
 
     <!-- Botón -->
-    <div class="row mt-4">
+    <div class="row">
         <div class="col">
             <button 
                 class="btn btn-primary"
                 type="submit"
             >
-                Crear
+            {{ selectedUser ? 'Actualizar' : 'Crear' }}
             </button>
         </div>
     </div>
