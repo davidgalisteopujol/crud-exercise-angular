@@ -8,16 +8,19 @@ import { User } from '../interfaces/user.interface';
   providedIn: 'root'
 })
 export class FormService {
+
   private baseUrl: string = environments.baseUrl;
   private userAddedSubject: Subject<User> = new Subject<User>();
   private selectedUserSubject: Subject<User> = new Subject<User>(); 
-  private selectedUserUpdatedSubject: Subject<void> = new Subject<void>() 
+  private selectedUserUpdatedSubject: Subject<void> = new Subject<void>();
 
   constructor(private http: HttpClient) {}
 
+
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/users`);
-  }
+  };
+
 
   addUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/users`, user).pipe(
@@ -25,39 +28,40 @@ export class FormService {
         this.userAddedSubject.next(addedUser);
       })
     );
-  }
+  };
+
 
   getUserAddedObservable(): Observable<User> {
     return this.userAddedSubject.asObservable();
-  }
+  };
+
 
   deleteUserById(id:string):Observable<User> {
-    return this.http.delete<User>(`${this.baseUrl}/users/${id}`)
-  }
+    return this.http.delete<User>(`${this.baseUrl}/users/${id}`);
+  };
   
 
-  setSelectedUser(user: User): void {  //brrar
+  setSelectedUser(user: User): void {  
     this.selectedUserSubject.next(user);
-    // this.selectedUserUpdatedSubject.next(user);
   }
+
 
   getSelectedUserObservable():Observable<User> {
     return this.selectedUserSubject.asObservable();
   }
 
+
   getSelectedUserUpdatedObservable(): Observable<void> {  //brrar
     return this.selectedUserUpdatedSubject.asObservable();
   }
 
+
   updateUser(user:User):Observable<User> {
     return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`,user).pipe(
       tap((updatedUser: User) => {
-        console.log("updatedUser observable tap")
         this.selectedUserUpdatedSubject.next(void 0 );
-        console.log(updatedUser)
       })
     );
-  }
-
+  };
 
 }

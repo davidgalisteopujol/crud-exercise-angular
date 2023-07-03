@@ -12,12 +12,12 @@ import { User } from '../../interfaces/user.interface';
   templateUrl: './form-user.component.html',
   styleUrls: ['./form-user.component.css']
 })
-export class FormUserComponent implements OnInit{
+
+
+export class FormUserComponent implements OnInit {
 
   public countries = countries;
-
   public currentUser!: User ;
-
   public selectedUser: User | null = null;  
  
   constructor( 
@@ -27,12 +27,12 @@ export class FormUserComponent implements OnInit{
     private formService: FormService
   ){}
   
-    ngOnInit(): void {
-      this.formService.getSelectedUserObservable().subscribe((user) => {
-        this.selectedUser = user;
+  ngOnInit(): void {
+    this.formService.getSelectedUserObservable().subscribe((user) => {
+      this.selectedUser = user;
         
-        this.myForm.reset(this.selectedUser)
-      });
+      this.myForm.reset(this.selectedUser)
+    });
   }
 
 
@@ -50,23 +50,24 @@ export class FormUserComponent implements OnInit{
     ]
   });
 
-  isValidField( field:string) {
-    return this.validatorsService.isValidField(this.myForm, field)
-  }
 
-  //Crear datos del usuario 
-  updateCurrentUser():void{
+  isValidField( field: string ) {
+    return this.validatorsService.isValidField(this.myForm, field)
+  };
+  
+
+  updateCurrentUser(): void {
     this.currentUser = this.myForm.value as User;
 
     if(this.selectedUser) {
       this.currentUser.id = this.selectedUser.id
     }
-  }
+  };
 
 
-  onSave():void {
+  onSave(): void {
     if (this.myForm.invalid) return;
-
+    
     this.updateCurrentUser()
 
     if(this.selectedUser) {
@@ -82,9 +83,7 @@ export class FormUserComponent implements OnInit{
   
       this.myForm.reset()
     }
-
-  }
-
+  };
 
 }
 

@@ -7,17 +7,21 @@ import { User } from '../../interfaces/user.interface';
   templateUrl: './table-user.component.html',
   styleUrls: ['./table-user.component.css']
 })
+
+
 export class TableUserComponent implements OnInit{
 
   public users: User[] = []
 
   constructor(private formService: FormService){}
 
+
   getUsersAPI() {
     this.formService.getUsers().subscribe((users) => {
       this.users = users;
     });
   }
+
 
   ngOnInit(): void {
     this.getUsersAPI();
@@ -29,20 +33,19 @@ export class TableUserComponent implements OnInit{
     this.formService.getSelectedUserUpdatedObservable().subscribe(() => {
       this.getUsersAPI()
     })
+  };
 
-    
-  }
 
-  deleteUser(id: number):void {
+  deleteUser( id: number ): void {
     const idUser = id.toString()
     this.formService.deleteUserById(idUser).subscribe(response => {
       this.getUsersAPI();
     })
-  }
+  };
 
-  editUser(user: User) {
+
+  editUser( user: User ) {
     this.formService.setSelectedUser(user);
-  }
-
+  };
 
 }

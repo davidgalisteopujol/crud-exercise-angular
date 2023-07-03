@@ -7,7 +7,7 @@ export class EmailValidator implements AsyncValidator {
 
     public emailPattern: RegExp = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
 
-    validate(control: AbstractControl): Observable<ValidationErrors | null> {
+    validate( control: AbstractControl ): Observable<ValidationErrors | null> {
         const email = control.value;
         const valid = this.emailPattern.test(email);
         
@@ -16,7 +16,6 @@ export class EmailValidator implements AsyncValidator {
         } else {
             return of({ invalidEmail: true }); // Correo electrónico inválido, se genera el error
         }
-    }
+    };
 
-    
 }
