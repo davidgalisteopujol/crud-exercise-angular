@@ -22,7 +22,7 @@ export class FormUserComponent implements OnInit {
 
   getCountryData() {
     if(this.countries.length === 0 ) {
-      console.log("Entra al get")
+      console.log("get countries")
       this.formService.getCountries().subscribe((response => {
         this.countries = response
       }))
@@ -39,7 +39,6 @@ export class FormUserComponent implements OnInit {
   
   
   ngOnInit(): void {
-    
     this.getCountryData()
     
     this.formService.getSelectedUserObservable().subscribe((user) => {
@@ -87,7 +86,7 @@ export class FormUserComponent implements OnInit {
     if(this.selectedUser) {
       
       this.formService.updateUser(this.currentUser)
-        .subscribe(response =>console.log("usuario actualizado", response))
+        .subscribe(response =>console.log("updated user", response))
 
       this.myForm.reset()
       this.selectedUser = null;

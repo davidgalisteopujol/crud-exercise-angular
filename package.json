@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "envs":"node ./scripts/set-envs.js",
     "backend": "json-server --watch data/db.json",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "npm run envs && ng serve",
+    "build": "npm run envs && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -29,6 +30,7 @@
     "@angular/cli": "~16.0.3",
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
+    "dotenv": "^16.3.1",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

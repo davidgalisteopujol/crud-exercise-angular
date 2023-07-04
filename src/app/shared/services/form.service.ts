@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environments } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 import { Observable, Subject, of, tap } from 'rxjs';
 import { User } from '../interfaces/user.interface';
 import { Country } from '../interfaces/country.interface';
@@ -11,9 +11,9 @@ import { Country } from '../interfaces/country.interface';
 export class FormService {
 
   private apiUrl:string= 'http://api.countrylayer.com/v2';
-  private apiKey:string ='?access_key=e1be57df5a24912850cacb61bfc6f82e'  
+  private apiKey = environment.api_key;
 
-  private baseUrl: string = environments.baseUrl;
+  private baseUrl = environment.baseUrl;
   private userAddedSubject: Subject<User> = new Subject<User>();
   private selectedUserSubject: Subject<User> = new Subject<User>(); 
   private selectedUserUpdatedSubject: Subject<void> = new Subject<void>();
@@ -23,17 +23,17 @@ export class FormService {
 
 
   getCountries(): Observable<Country[] | []> {
-      return this.http.get<Country[]>(`${this.apiUrl}/all${this.apiKey}`); 
+      return this.http.get<Country[]>(`${this.apiUrl}/all?access_key=${this.apiKey}`); 
   };
   
   
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/users`);
+    return this.http.get<User[]>(this.baseUrl);
   };
 
 
   addUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/users`, user).pipe(
+    return this.http.post<User>(this.baseUrl, user).pipe(
       tap((addedUser: User) => {
         this.userAddedSubject.next(addedUser);
       })
@@ -47,7 +47,7 @@ export class FormService {
 
 
   deleteUserById(id:string):Observable<User> {
-    return this.http.delete<User>(`${this.baseUrl}/users/${id}`);
+    return this.http.delete<User>(`${this.baseUrl}/${id}`);
   };
   
 
@@ -67,7 +67,7 @@ export class FormService {
 
 
   updateUser(user:User):Observable<User> {
-    return this.http.patch<User>(`${this.baseUrl}/users/${user.id}`,user).pipe(
+    return this.http.patch<User>(`${this.baseUrl}/${user.id}`,user).pipe(
       tap((updatedUser: User) => {
         this.selectedUserUpdatedSubject.next(void 0 );
       })
