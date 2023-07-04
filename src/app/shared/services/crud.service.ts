@@ -10,20 +10,20 @@ import { Country } from '../interfaces/country.interface';
 })
 export class FormService {
 
-  private apiUrl:string= 'http://api.countrylayer.com/v2';
+  private countryUrl = 'http://api.countrylayer.com/v2'; 
   private apiKey = environment.api_key;
 
   private baseUrl = environment.baseUrl;
   private userAddedSubject: Subject<User> = new Subject<User>();
   private selectedUserSubject: Subject<User> = new Subject<User>(); 
-  private selectedUserUpdatedSubject: Subject<void> = new Subject<void>();
+  private selectedUserUpdatedSubject: Subject<User> = new Subject<User>();
   
 
   constructor(private http: HttpClient) {}
 
 
   getCountries(): Observable<Country[] | []> {
-      return this.http.get<Country[]>(`${this.apiUrl}/all?access_key=${this.apiKey}`); 
+      return this.http.get<Country[]>(`${this.countryUrl}/all?access_key=${this.apiKey}`); 
   };
   
   
@@ -35,7 +35,7 @@ export class FormService {
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.baseUrl, user).pipe(
       tap((addedUser: User) => {
-        this.userAddedSubject.next(addedUser);
+        this.userAddedSubject.next(addedUser);  //set user y usar esta linea 38
       })
     );
   };
@@ -61,7 +61,7 @@ export class FormService {
   }
 
 
-  getSelectedUserUpdatedObservable(): Observable<void> {  
+  getSelectedUserUpdatedObservable(): Observable<User> {  
     return this.selectedUserUpdatedSubject.asObservable();
   }
 
@@ -69,9 +69,11 @@ export class FormService {
   updateUser(user:User):Observable<User> {
     return this.http.patch<User>(`${this.baseUrl}/${user.id}`,user).pipe(
       tap((updatedUser: User) => {
-        this.selectedUserUpdatedSubject.next(void 0 );
+        this.selectedUserUpdatedSubject.next(updatedUser);
       })
     );
   };
+
+ 
 
 }

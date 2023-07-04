@@ -6,7 +6,7 @@ export class ValidatorsService {
 
     public firstNameAndLastnamePattern: string = '([a-zA-Z]+) ([a-zA-Z]+)';
     
-    public isValidField( form: FormGroup, field:string ) {
+    public isFieldValid( form: FormGroup, field:string ) {  //isFieldValid cambiar nombre
         return form.controls[field].errors && form.controls[field].touched;
     }
 

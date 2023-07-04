@@ -35,20 +35,10 @@
       "password": "123456",
       "password2": "123456",
       "email": "andrea@gmail.com",
-      "subscribed": null,
+      "subscribed": true,
       "country": "Spain",
       "city": "Málaga",
       "id": 7
-    },
-    {
-      "name": "Antonio Galisteo",
-      "password": "123456",
-      "password2": "123456",
-      "email": "antonio@gmail.com",
-      "subscribed": true,
-      "country": "Spain",
-      "city": "Córdoba",
-      "id": 8
     },
     {
       "name": "david galisteo",
@@ -61,24 +51,14 @@
       "id": 9
     },
     {
-      "name": "antonio martinez",
+      "name": "Raul valdez",
       "password": "123456",
       "password2": "123456",
-      "email": "antonio@gmail.com",
-      "subscribed": true,
-      "country": "Spain",
-      "city": "Sevilla",
+      "email": "john@gmail.com",
+      "subscribed": false,
+      "country": "Taiwan",
+      "city": "Tajikistan",
       "id": 10
-    },
-    {
-      "name": "carlos ortiz",
-      "password": "123456",
-      "password2": "123456",
-      "email": "carlos@gmail.com",
-      "subscribed": true,
-      "country": "Spain",
-      "city": "malaga",
-      "id": 11
     }
   ]
 }

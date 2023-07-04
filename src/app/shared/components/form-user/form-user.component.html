@@ -8,7 +8,7 @@
                    placeholder="Nombre de usuario"
                    formControlName="name"
             >
-            <span *ngIf="isValidField('name')" class="form-text text-danger">
+            <span *ngIf="isFieldValid('name')" class="form-text text-danger">
                 Debe de ser en formato de nombre y apellido
             </span>
         </div>
@@ -24,7 +24,7 @@
                    placeholder="Establezca su contraseña"
                    formControlName="password"   
             >
-            <span *ngIf="isValidField('password')" class="form-text text-danger">
+            <span *ngIf="isFieldValid('password')" class="form-text text-danger">
                  La contraseña debe de ser mayor de 6 caracteres.
             </span> 
         </div>
@@ -40,7 +40,7 @@
                    placeholder="Repita la contraseña"
                    formControlName="password2"
             >
-            <span *ngIf="isValidField('password2')" class="form-text text-danger">
+            <span *ngIf="isFieldValid('password2')" class="form-text text-danger">
                  Las contraseñas deben de ser iguales
             </span>
         </div>
@@ -56,9 +56,9 @@
                    placeholder="Introduzca un email válido"
                    formControlName="email"
             >
-            <span *ngIf="isValidField('email')" class="form-text text-danger">
-                Ingrese un correo válido
-            </span> 
+            <span *ngIf="isFieldValid('email') || myForm.get('email')?.hasError('emailExists')" class="form-text text-danger">
+                {{ myForm.get('email')?.hasError('emailExists') ? 'El correo electrónico ya existe' : 'Ingrese un correo válido' }}
+              </span>
         </div>
     </div>
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormService } from '../../services/form.service';
+import { FormService } from '../../services/crud.service';
 import { User } from '../../interfaces/user.interface';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-table-user',
@@ -16,31 +17,34 @@ export class TableUserComponent implements OnInit{
   constructor(private formService: FormService){}
 
 
-  getUsersAPI() {
-    this.formService.getUsers().subscribe((users) => {
-      this.users = users;
-    });
-  }
-
-
   ngOnInit(): void {
-    this.getUsersAPI();
+    this.getUsers();
 
     this.formService.getUserAddedObservable().subscribe((addedUser) => {
       this.users.push(addedUser);
     });
 
     this.formService.getSelectedUserUpdatedObservable().subscribe(() => {
-      this.getUsersAPI()
+      this.getUsers()
     })
   };
+
+  getUsers() {
+    this.formService.getUsers().subscribe((users) => {
+      this.users = users;
+    });
+  }
 
 
   deleteUser( id: number ): void {
     const idUser = id.toString()
-    this.formService.deleteUserById(idUser).subscribe(response => {
-      this.getUsersAPI();
-    })
+    this.formService.deleteUserById(idUser)
+      .pipe(
+        switchMap( (_) => this.formService.getUsers() )
+      )
+      .subscribe((users) => {
+        this.users = users;
+      })
   };
 
 
