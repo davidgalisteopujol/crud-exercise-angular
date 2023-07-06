@@ -1,55 +1,58 @@
-import { Component, OnInit } from '@angular/core';
-import { FormService } from '../../services/crud.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { CrudService } from '../../services/crud.service';
 import { User } from '../../interfaces/user.interface';
-import { switchMap } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-table-user',
   templateUrl: './table-user.component.html',
   styleUrls: ['./table-user.component.css']
 })
+export class TableUserComponent implements OnInit, OnDestroy {
+
+  public users: User[] = [];
+  private unsubscribe$ = new Subject<void>();
+
+  @Input() newUserAdded: boolean = false;
+  @Output() onEditUser: EventEmitter<User> = new EventEmitter();
 
 
-export class TableUserComponent implements OnInit{
-
-  public users: User[] = []
-
-  constructor(private formService: FormService){}
+  constructor(private crudService: CrudService) { }
 
 
   ngOnInit(): void {
     this.getUsers();
-
-    this.formService.getUserAddedObservable().subscribe((addedUser) => {
-      this.users.push(addedUser);
-    });
-
-    this.formService.getSelectedUserUpdatedObservable().subscribe(() => {
-      this.getUsers()
-    })
   };
 
-  getUsers() {
-    this.formService.getUsers().subscribe((users) => {
+  getUsers(): void {
+    this.crudService.users$.subscribe((users) => {
       this.users = users;
     });
-  }
+    this.crudService.getUsers().subscribe();
+  };
 
 
-  deleteUser( id: number ): void {
-    const idUser = id.toString()
-    this.formService.deleteUserById(idUser)
+  deleteUser(id: number): void {
+    const idUser = id.toString();
+    this.crudService.deleteUserById(idUser)
       .pipe(
-        switchMap( (_) => this.formService.getUsers() )
+        switchMap((_) => this.crudService.getUsers()),
+        takeUntil(this.unsubscribe$)
       )
       .subscribe((users) => {
         this.users = users;
-      })
+      });
   };
 
 
-  editUser( user: User ) {
-    this.formService.setSelectedUser(user);
+  editUser(user: User) {
+    this.onEditUser.emit(user);
   };
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  };
+
 
 }

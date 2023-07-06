@@ -1,16 +1,6 @@
 {
   "users": [
     {
-      "name": "Jack Orwell",
-      "password": "123456",
-      "password2": "123456",
-      "email": "jack@gmail.com",
-      "subscribed": true,
-      "country": "Ireland",
-      "city": "dublin",
-      "id": 4
-    },
-    {
       "name": "Amanda Alonso",
       "password": "123456",
       "password2": "123456",
@@ -21,7 +11,7 @@
       "id": 5
     },
     {
-      "name": "Joaquin Ramirez",
+      "name": "Joaquin Ram",
       "password": "123456",
       "password2": "123456",
       "email": "joaquin_ram@gmail.com",
@@ -41,7 +31,7 @@
       "id": 7
     },
     {
-      "name": "david galisteo",
+      "name": "david galis",
       "password": "123456",
       "password2": "123456",
       "email": "david.galisteo@bosonit.com",
@@ -49,16 +39,6 @@
       "country": "Spain",
       "city": "granada",
       "id": 9
-    },
-    {
-      "name": "Raul valdez",
-      "password": "123456",
-      "password2": "123456",
-      "email": "john@gmail.com",
-      "subscribed": false,
-      "country": "Taiwan",
-      "city": "Tajikistan",
-      "id": 10
     }
   ]
 }

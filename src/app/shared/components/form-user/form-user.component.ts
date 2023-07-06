@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailValidator } from '../../services/validators/email-validator.service';
 import { ValidatorsService } from '../../services/validators/validators.service';
-import { FormService } from '../../services/crud.service';
+import { CrudService } from '../../services/crud.service';
 import { User } from '../../interfaces/user.interface';
 import { Country } from '../../interfaces/country.interface';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -12,28 +13,24 @@ import { Country } from '../../interfaces/country.interface';
   templateUrl: './form-user.component.html',
   styleUrls: ['./form-user.component.css']
 })
-export class FormUserComponent implements OnInit {
+export class FormUserComponent implements OnInit, OnDestroy {
 
   public countries: Country[] = [];
-  public currentUser!: User;
+  public newUser!: User;
   public selectedUser: User | null = null;
+  private unsubscribe$ = new Subject<void>();
+
 
   constructor(
     private fb: FormBuilder,
     private emailValidator: EmailValidator,
     private validatorsService: ValidatorsService,
-    private formService: FormService
+    private crudService: CrudService
   ) { }
 
 
   ngOnInit(): void {
-    this.getCountryData()
-
-    this.formService.getSelectedUserObservable().subscribe((user) => {  //Pasar esto a función
-      this.selectedUser = user;
-
-      this.myForm.reset(this.selectedUser)
-    });
+    this.getCountryData();
   }
 
 
@@ -43,7 +40,7 @@ export class FormUserComponent implements OnInit {
     password2: ['', [Validators.required]],
     email: ['', [Validators.required], [this.emailValidator]],
     subscribed: [false],
-    country: ['', Validators.required],
+    country: [''],
     city: ['', Validators.required]
   }, {
     validators: [
@@ -51,49 +48,76 @@ export class FormUserComponent implements OnInit {
     ]
   });
 
-  getCountryData() {
-    if (this.countries.length === 0) {
-      console.log("get countries")
-      this.formService.getCountries().subscribe((response => {
-        this.countries = response;
-      }))
-    };
-  };
-
 
   isFieldValid(field: string) {
     return this.validatorsService.isFieldValid(this.myForm, field);
   };
 
 
-  updateCurrentUser(): void {
-    this.currentUser = this.myForm.value as User;
+  getCountryData() {
+    if (this.countries.length === 0) {
+      console.log("get countries")
+      this.crudService.getCountries().subscribe((response => {
+        this.countries = response;
+      }))
+    };
+  };
 
-    if (this.selectedUser) {
-      this.currentUser.id = this.selectedUser.id;
-    }
+
+  createUser() {
+    this.newUser = this.myForm.value as User;
+  };
+
+
+  getEditUser(user: User) {
+    this.selectedUser = user;
+    this.myForm.patchValue(user);
+  };
+
+  setEditUser() {
+    this.selectedUser = { ...this.selectedUser, ...this.myForm.value, id: this.selectedUser?.id };
+
   };
 
 
   onSave(): void {
     if (this.myForm.invalid) return;
 
-    this.updateCurrentUser()
-
     if (this.selectedUser) {
+      this.setEditUser();
 
-      this.formService.updateUser(this.currentUser)
-        .subscribe(user => console.log("updated user", user))
+      this.crudService.updateUser(this.selectedUser)
+        .pipe(
+          switchMap((_) => this.crudService.getUsers()),
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((users) => {
+          console.log(users);
+        });
 
-      this.myForm.reset()
+      this.myForm.reset();
       this.selectedUser = null;
 
     } else {
-      this.formService.addUser(this.currentUser)
-        .subscribe(user => console.log(user))
 
-      this.myForm.reset()
-    }
+      this.createUser();
+      this.crudService.addUser(this.newUser)
+        .pipe(
+          switchMap((_) => this.crudService.getUsers()),
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((users) => {
+          console.log(users);
+        });
+
+      this.myForm.reset();
+    };
+
+  };
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   };
 
 }
