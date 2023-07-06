@@ -1,7 +1,7 @@
 <div class="d-flex">
     <form [formGroup]="myForm" (ngSubmit)="onSave()" class="m-4">
 
-        <!-- Nombre -->
+        <!-- Name -->
         <div class="mb-3">
             <label class="col-form-label">Nombre de usuario</label>
             <div class="col-sm-9">
@@ -15,7 +15,6 @@
             </div>
         </div>  
         
-    
         <!-- Password -->
         <div class="mb-3">
             <label class="col-form-label">Contraseña</label>
@@ -30,7 +29,6 @@
                 </span> 
             </div>
         </div>
-    
     
         <!-- Password2 -->
         <div class="mb-3">
@@ -47,7 +45,6 @@
             </div>
         </div>
     
-    
         <!-- Email -->
         <div class="mb-3">
             <label class="col-sm-3 col-form-label">Email</label>
@@ -63,7 +60,6 @@
             </div>
         </div>
     
-    
         <!-- Check -->
         <div class="form-check mb-3 mt-3">
             <input formControlName="subscribed" class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
@@ -72,8 +68,7 @@
             </label>
         </div>
     
-    
-        <!-- Paises -->
+        <!-- Countries -->
         <div class="form-floating">
             <select class="form-select" id="countries" formControlName="country" >
               <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
@@ -81,8 +76,7 @@
             <label for="countries">Selecione su País</label>
         </div>
     
-    
-          <!-- Ciudad -->
+          <!-- City -->
         <div class="mb-3 mt-3">
             <label class="col-sm-3 col-form-label">Ciudad</label>
             <div class="col-sm-9">
@@ -93,8 +87,7 @@
             </div>
         </div>  
     
-    
-        <!-- Botón -->
+        <!-- Button -->
         <div class="row">
             <div class="col">
                 <button 
@@ -108,7 +101,7 @@
           
     </form>
 
-    <app-table-user (onEditUser)="getEditUser($event)" ></app-table-user>
+    <app-table-user (onEditUser)="getEditUser($event)"></app-table-user>
 
 </div>
 

@@ -20,20 +20,6 @@ export class FormUserComponent implements OnInit, OnDestroy {
   public selectedUser: User | null = null;
   private unsubscribe$ = new Subject<void>();
 
-
-  constructor(
-    private fb: FormBuilder,
-    private emailValidator: EmailValidator,
-    private validatorsService: ValidatorsService,
-    private crudService: CrudService
-  ) { }
-
-
-  ngOnInit(): void {
-    this.getCountryData();
-  }
-
-
   public myForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.pattern(this.validatorsService.firstNameAndLastnamePattern)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
@@ -47,6 +33,21 @@ export class FormUserComponent implements OnInit, OnDestroy {
       this.validatorsService.isFieldOneEqualFieldTwo('password', 'password2')
     ]
   });
+
+  
+
+  constructor(
+    private fb: FormBuilder,
+    private emailValidator: EmailValidator,
+    private validatorsService: ValidatorsService,
+    private crudService: CrudService
+  ) { };
+
+
+
+  ngOnInit(): void {
+    this.getCountryData();
+  }
 
 
   isFieldValid(field: string) {
@@ -73,6 +74,7 @@ export class FormUserComponent implements OnInit, OnDestroy {
     this.selectedUser = user;
     this.myForm.patchValue(user);
   };
+
 
   setEditUser() {
     this.selectedUser = { ...this.selectedUser, ...this.myForm.value, id: this.selectedUser?.id };
@@ -114,6 +116,7 @@ export class FormUserComponent implements OnInit, OnDestroy {
     };
 
   };
+
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();

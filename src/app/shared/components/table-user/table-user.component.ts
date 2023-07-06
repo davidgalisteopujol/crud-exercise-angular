@@ -13,16 +13,16 @@ export class TableUserComponent implements OnInit, OnDestroy {
   public users: User[] = [];
   private unsubscribe$ = new Subject<void>();
 
-  @Input() newUserAdded: boolean = false;
   @Output() onEditUser: EventEmitter<User> = new EventEmitter();
 
-
-  constructor(private crudService: CrudService) { }
+  
+  constructor(private crudService: CrudService) { };
 
 
   ngOnInit(): void {
     this.getUsers();
   };
+  
 
   getUsers(): void {
     this.crudService.users$.subscribe((users) => {
@@ -48,11 +48,11 @@ export class TableUserComponent implements OnInit, OnDestroy {
   editUser(user: User) {
     this.onEditUser.emit(user);
   };
+  
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   };
-
 
 }
