@@ -40,7 +40,7 @@ export class FormUserComponent implements OnInit, OnDestroy {
     password2: ['', [Validators.required]],
     email: ['', [Validators.required], [this.emailValidator]],
     subscribed: [false],
-    country: [''],
+    country: ['', [Validators.required]],
     city: ['', Validators.required]
   }, {
     validators: [

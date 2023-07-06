@@ -39,6 +39,16 @@
       "country": "Spain",
       "city": "granada",
       "id": 9
+    },
+    {
+      "name": "antonio rodriguez",
+      "password": "123456",
+      "password2": "123456",
+      "email": "antonio@gmail.com",
+      "subscribed": false,
+      "country": "Spain",
+      "city": "cordoba",
+      "id": 10
     }
   ]
 }
