@@ -45,10 +45,20 @@
       "password": "123456",
       "password2": "123456",
       "email": "antonio@gmail.com",
-      "subscribed": false,
+      "subscribed": true,
       "country": "Spain",
       "city": "cordoba",
       "id": 10
+    },
+    {
+      "name": "antonio jimenez",
+      "password": "123456",
+      "password2": "123456",
+      "email": "antoniojim@gmail.com",
+      "subscribed": true,
+      "country": "Bahamas",
+      "city": "cordoba",
+      "id": 11
     }
   ]
 }

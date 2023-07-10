@@ -54,7 +54,7 @@
                        placeholder="Introduzca un email válido"
                        formControlName="email"
                 >
-                <span *ngIf="isFieldValid('email') || myForm.get('email')?.hasError('emailExists')" class="form-text text-danger">
+                <span *ngIf="isEmailValid" class="form-text text-danger">
                     {{ myForm.get('email')?.hasError('emailExists') ? 'El correo electrónico ya existe' : 'Ingrese un correo válido' }}
                   </span>
             </div>
@@ -94,16 +94,18 @@
                     class="btn btn-primary"
                     type="submit"
                 >
-                {{ selectedUser ? 'Actualizar' : 'Crear' }}
+                {{ userToEdit ? 'Actualizar' : 'Crear' }}
                 </button>
             </div>
         </div>
           
     </form>
 
-    <app-table-user (onEditUser)="getEditUser($event)"></app-table-user>
+    <app-table-user [users]="users" (onEditUser)="getEditedUser($event)"></app-table-user>
 
 </div>
+
+
 
 
 

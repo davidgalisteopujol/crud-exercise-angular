@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { CrudService } from '../../services/crud.service';
 import { User } from '../../interfaces/user.interface';
 import { Subject, switchMap, takeUntil } from 'rxjs';
@@ -8,30 +8,17 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
   templateUrl: './table-user.component.html',
   styleUrls: ['./table-user.component.css']
 })
-export class TableUserComponent implements OnInit, OnDestroy {
+export class TableUserComponent implements OnDestroy {
 
-  public users: User[] = [];
   private unsubscribe$ = new Subject<void>();
 
+  @Input() users!: User[];
   @Output() onEditUser: EventEmitter<User> = new EventEmitter();
 
-  
+
   constructor(private crudService: CrudService) { };
 
-
-  ngOnInit(): void {
-    this.getUsers();
-  };
   
-
-  getUsers(): void {
-    this.crudService.users$.subscribe((users) => {
-      this.users = users;
-    });
-    this.crudService.getUsers().subscribe();
-  };
-
-
   deleteUser(id: number): void {
     const idUser = id.toString();
     this.crudService.deleteUserById(idUser)
@@ -48,7 +35,7 @@ export class TableUserComponent implements OnInit, OnDestroy {
   editUser(user: User) {
     this.onEditUser.emit(user);
   };
-  
+
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
