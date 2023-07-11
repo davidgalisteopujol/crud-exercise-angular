@@ -15,10 +15,10 @@ export class TableUserComponent implements OnDestroy {
   @Input() users!: User[];
   @Output() onEditUser: EventEmitter<User> = new EventEmitter();
 
-
+  
   constructor(private crudService: CrudService) { };
 
-  
+
   deleteUser(id: number): void {
     const idUser = id.toString();
     this.crudService.deleteUserById(idUser)

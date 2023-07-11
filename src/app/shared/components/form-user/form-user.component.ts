@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailValidator } from '../../services/validators/email-validator.service';
 import { ValidatorsService } from '../../services/validators/validators.service';
@@ -17,12 +17,12 @@ export class FormUserComponent implements OnInit, OnDestroy {
 
   public countries: Country[] = [];
   public users: User[] = [];
-  public newUser!: User;
-  public userToEdit: User | null = null;
+  public currentUser: User | null = null;
+  public isEditMode = false;
   private unsubscribe$ = new Subject<void>();
 
-
   public myForm: FormGroup = this.fb.group({
+    id: [""],
     name: ['', [Validators.required, Validators.pattern(this.validatorsService.firstNameAndLastnamePattern)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     password2: ['', [Validators.required]],
@@ -36,9 +36,11 @@ export class FormUserComponent implements OnInit, OnDestroy {
     ]
   });
 
-  get isEmailValid():boolean  {
-    return (this.myForm.get('email')?.hasError('emailExists') || this.myForm.get('email')?.valid) as boolean;
-  }
+
+  get isEmailValid(): boolean {
+    return this.myForm.get('email')?.valid as boolean;
+  };
+
 
   constructor(
     private fb: FormBuilder,
@@ -53,75 +55,71 @@ export class FormUserComponent implements OnInit, OnDestroy {
     this.getUsers();
   };
 
-  
+
   getCountryData() {
-    if (this.countries.length === 0) {
-      console.log("get countries")   //PONER DESUSCRIPCION
-      this.crudService.getCountries().subscribe((countries => {
+    this.crudService.getCountries()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((countries => {
         this.countries = countries;
       }))
-    };
   };
 
 
   getUsers(): void {
     this.crudService.getUsers()
-      .subscribe(users => {
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((users) => {
         this.users = users;
-      }
-      );
+      });
   };
 
 
-  createUser() {
-    this.newUser = this.myForm.value as User;
-  };
-
-
-  getEditedUser(user: User) {  
-    this.userToEdit = user;
+  getUserToEdit(user: User): void {
+    this.isEditMode = true;
+    this.currentUser = user;
     this.myForm.patchValue(user);
   };
 
 
-  setEditUser() {
-    this.userToEdit = { ...this.userToEdit, ...this.myForm.value, id: this.userToEdit?.id };
+  onSave(): void {
+    if (this.isEditMode) {
+      this.updateUser(this.myForm.value as User);
+
+    } else {
+      this.addUser(this.myForm.value as User);
+    };
   };
 
 
-  onSave(): void {
-    if (this.myForm.invalid) return;  //poner en el html con el ngif
+  updateUser(user: User): void {
+    this.crudService.updateUser(user)
+      .pipe(
+        switchMap((_) => this.crudService.getUsers()),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((users) => {
+        this.users = users;
+        this.myForm.reset();
+        this.currentUser = null;
+        this.isEditMode = false;
+      });
+  };
 
-    if (this.userToEdit) {
-      this.setEditUser();
 
-      this.crudService.updateUser(this.userToEdit)
-        .pipe(
-          switchMap((_) => this.crudService.getUsers()),
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((users) => {
-          this.users = users;
-        });
-
-      this.myForm.reset();
-      this.userToEdit = null;
-
-    } else {
-
-      this.createUser();
-      this.crudService.addUser(this.newUser)
-        .pipe(
-          switchMap((_) => this.crudService.getUsers()),
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((users) => {
-          this.users = users
-          this.myForm.reset();
-
-        });
-
-    };
+  addUser(user: User): void {
+    this.crudService.addUser(user)
+      .pipe(
+        switchMap((_) => this.crudService.getUsers()),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((users) => {
+        this.users = users;
+        this.myForm.reset();
+      });
   };
 
 
@@ -136,10 +134,3 @@ export class FormUserComponent implements OnInit, OnDestroy {
   };
 
 }
-
-
-
-
-
-
-

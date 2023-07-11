@@ -36,5 +36,4 @@ export class CrudService {
     return this.http.patch<User>(`${this.baseUrl}/${user.id}`, user);
   };
 
-
 }
