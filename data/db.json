@@ -59,6 +59,26 @@
       "country": "Bahamas",
       "city": "cordoba",
       "id": 11
+    },
+    {
+      "id": 12,
+      "name": "raul valdez",
+      "password": "123456",
+      "password2": "123456",
+      "email": "raul.valdez@bosonit.com",
+      "subscribed": true,
+      "country": "Spain",
+      "city": "madrid"
+    },
+    {
+      "id": 13,
+      "name": "antonio jimenez",
+      "password": "123456",
+      "password2": "123456",
+      "email": "antoniojim@gmail.com",
+      "subscribed": true,
+      "country": "Spain",
+      "city": "zaragoza"
     }
   ]
 }

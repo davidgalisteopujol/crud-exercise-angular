@@ -76,7 +76,7 @@
         <!-- Button -->
         <div class="row">
             <div class="col">
-                <button *ngIf="myForm.valid" class="btn btn-primary" type="submit">
+                <button [disabled]="myForm.invalid" class="btn btn-primary" type="submit">
                     {{ isEditMode ? 'Actualizar' : 'Crear' }}
                 </button>
             </div>
